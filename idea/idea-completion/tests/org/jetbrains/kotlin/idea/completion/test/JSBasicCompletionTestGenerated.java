@@ -1004,88 +1004,9 @@ public class JSBasicCompletionTestGenerated extends AbstractJSBasicCompletionTes
                 KotlinTestUtils.runTest(this::doTest, this, testDataFilePath);
             }
 
-            @TestMetadata("AfterNullable.kt")
-            public void testAfterNullable() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/AfterNullable.kt");
-            }
-
-            @TestMetadata("AfterNullableAutoCast.kt")
-            public void testAfterNullableAutoCast() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/AfterNullableAutoCast.kt");
-            }
-
-            @TestMetadata("AfterNullableAutoCast2.kt")
-            public void testAfterNullableAutoCast2() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/AfterNullableAutoCast2.kt");
-            }
-
-            public void testAllFilesPresentInBoldOrGrayed() throws Exception {
-                KotlinTestUtils.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("idea/idea-completion/testData/basic/common/boldOrGrayed"), Pattern.compile("^(.+)\\.kt$"), null, true);
-            }
-
-            @TestMetadata("ImmediateExtensionMembers1.kt")
-            public void testImmediateExtensionMembers1() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateExtensionMembers1.kt");
-            }
-
-            @TestMetadata("ImmediateExtensionMembers2.kt")
-            public void testImmediateExtensionMembers2() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateExtensionMembers2.kt");
-            }
-
-            @TestMetadata("ImmediateExtensionMembers3.kt")
-            public void testImmediateExtensionMembers3() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateExtensionMembers3.kt");
-            }
-
-            @TestMetadata("ImmediateExtensionMembers4.kt")
-            public void testImmediateExtensionMembers4() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateExtensionMembers4.kt");
-            }
-
-            @TestMetadata("ImmediateExtensionMembersGeneric.kt")
-            public void testImmediateExtensionMembersGeneric() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateExtensionMembersGeneric.kt");
-            }
-
-            @TestMetadata("ImmediateMembers1.kt")
-            public void testImmediateMembers1() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateMembers1.kt");
-            }
-
-            @TestMetadata("ImmediateMembers2.kt")
-            public void testImmediateMembers2() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateMembers2.kt");
-            }
-
-            @TestMetadata("ImmediateMembers3.kt")
-            public void testImmediateMembers3() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateMembers3.kt");
-            }
-
-            @TestMetadata("ImmediateMembers4.kt")
-            public void testImmediateMembers4() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateMembers4.kt");
-            }
-
-            @TestMetadata("ImmediateMembers5.kt")
-            public void testImmediateMembers5() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/ImmediateMembers5.kt");
-            }
-
             @TestMetadata("InExtensionForNullable.kt")
             public void testInExtensionForNullable() throws Exception {
                 runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/InExtensionForNullable.kt");
-            }
-
-            @TestMetadata("KT9835.kt")
-            public void testKT9835() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/KT9835.kt");
-            }
-
-            @TestMetadata("NonPredictableSmartCast.kt")
-            public void testNonPredictableSmartCast() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/NonPredictableSmartCast.kt");
             }
 
             @TestMetadata("NonPredictableSmartCastWithWrongReturnType.kt")
@@ -1096,11 +1017,6 @@ public class JSBasicCompletionTestGenerated extends AbstractJSBasicCompletionTes
             @TestMetadata("SafeCallAfterNullable.kt")
             public void testSafeCallAfterNullable() throws Exception {
                 runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/SafeCallAfterNullable.kt");
-            }
-
-            @TestMetadata("TwoReceivers.kt")
-            public void testTwoReceivers() throws Exception {
-                runTest("idea/idea-completion/testData/basic/common/boldOrGrayed/TwoReceivers.kt");
             }
         }
 
