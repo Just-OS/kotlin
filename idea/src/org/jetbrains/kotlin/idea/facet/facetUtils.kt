@@ -5,7 +5,9 @@
 
 package org.jetbrains.kotlin.idea.facet
 
+import com.intellij.facet.FacetManager
 import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProvider
+import com.intellij.openapi.externalSystem.service.project.IdeModifiableModelsProviderImpl
 import com.intellij.openapi.module.Module
 import com.intellij.openapi.projectRoots.JavaSdk
 import com.intellij.openapi.projectRoots.JavaSdkVersion
@@ -131,6 +133,22 @@ fun Module.getOrCreateFacet(
         }
     }
     return facet
+}
+
+fun Module.hasKotlinFacet() = FacetManager.getInstance(this).getFacetByType(KotlinFacetType.TYPE_ID) != null
+
+fun Module.removeKotlinFacet(
+    modelsProvider: IdeModifiableModelsProvider,
+    commitModel: Boolean = false
+) {
+    val facetModel = modelsProvider.getModifiableFacetModel(this)
+    val facet = facetModel.findFacet(KotlinFacetType.TYPE_ID, KotlinFacetType.INSTANCE.defaultFacetName) ?: return
+    facetModel.removeFacet(facet)
+    if (commitModel) {
+        runWriteAction {
+            facetModel.commit()
+        }
+    }
 }
 
 //method used for non-mpp modules

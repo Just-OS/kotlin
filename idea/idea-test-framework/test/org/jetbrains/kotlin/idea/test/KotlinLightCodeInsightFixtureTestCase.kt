@@ -238,17 +238,18 @@ object CompilerTestDirectives {
 }
 
 fun <T> withCustomCompilerOptions(fileText: String, project: Project, module: Module, body: () -> T): T {
+    val removeFacet = !module.hasKotlinFacet()
     val configured = configureCompilerOptions(fileText, project, module)
     try {
         return body()
     } finally {
         if (configured) {
-            rollbackCompilerOptions(project, module)
+            rollbackCompilerOptions(project, module, removeFacet)
         }
     }
 }
 
-fun configureCompilerOptions(fileText: String, project: Project, module: Module): Boolean {
+private fun configureCompilerOptions(fileText: String, project: Project, module: Module): Boolean {
     val version = InTextDirectivesUtils.findStringWithPrefixes(fileText, "// $LANGUAGE_VERSION_DIRECTIVE ")
     val jvmTarget = InTextDirectivesUtils.findStringWithPrefixes(fileText, "// $JVM_TARGET_DIRECTIVE ")
     // We can have several such directives in quickFixMultiFile tests
@@ -281,6 +282,26 @@ fun configureCompilerOptions(fileText: String, project: Project, module: Module)
     return false
 }
 
+private fun rollbackCompilerOptions(project: Project, module: Module, removeFacet: Boolean = true) {
+    if (removeFacet) {
+        val modelsProvider = IdeModifiableModelsProviderImpl(project)
+        module.removeKotlinFacet(modelsProvider, commitModel = true)
+        return
+    }
+
+    configureLanguageAndApiVersion(project, module, LanguageVersion.LATEST_STABLE.versionString)
+
+    val facetSettings = KotlinFacet.get(module)!!.configuration.settings
+    (facetSettings.compilerArguments as? K2JVMCompilerArguments)?.jvmTarget = JvmTarget.DEFAULT.description
+
+    val compilerSettings = facetSettings.compilerSettings ?: CompilerSettings().also {
+        facetSettings.compilerSettings = it
+    }
+    compilerSettings.additionalArguments = DEFAULT_ADDITIONAL_ARGUMENTS
+    facetSettings.updateMergedArguments()
+    KotlinCompilerSettings.getInstance(project).update { this.additionalArguments = DEFAULT_ADDITIONAL_ARGUMENTS }
+}
+
 fun <T> configureRegistryAndRun(fileText: String, body: () -> T) {
     val registers = InTextDirectivesUtils.findListWithPrefixes(fileText, "// REGISTRY:")
         .map { it.split(' ') }
@@ -297,21 +318,26 @@ fun <T> configureRegistryAndRun(fileText: String, body: () -> T) {
     }
 }
 
-private fun rollbackCompilerOptions(project: Project, module: Module) {
-    configureLanguageAndApiVersion(project, module, LanguageVersion.LATEST_STABLE.versionString)
-
-    val facetSettings = KotlinFacet.get(module)!!.configuration.settings
-    (facetSettings.compilerArguments as? K2JVMCompilerArguments)?.jvmTarget = JvmTarget.DEFAULT.description
-
-    val compilerSettings = facetSettings.compilerSettings ?: CompilerSettings().also {
-        facetSettings.compilerSettings = it
+private fun withCustomLanguageAndApiVersion(
+    project: Project,
+    module: Module,
+    languageVersion: String,
+    apiVersion: String?, body: () -> Unit,
+) {
+    val removeFacet = !module.hasKotlinFacet()
+    configureLanguageAndApiVersion(project, module, languageVersion, apiVersion)
+    try {
+        body()
+    } finally {
+        if (removeFacet) {
+            module.removeKotlinFacet(IdeModifiableModelsProviderImpl(project), commitModel = true)
+        } else {
+            configureLanguageAndApiVersion(project, module, LanguageVersion.LATEST_STABLE.versionString, null)
+        }
     }
-    compilerSettings.additionalArguments = DEFAULT_ADDITIONAL_ARGUMENTS
-    facetSettings.updateMergedArguments()
-    KotlinCompilerSettings.getInstance(project).update { this.additionalArguments = DEFAULT_ADDITIONAL_ARGUMENTS }
 }
 
-fun configureLanguageAndApiVersion(
+private fun configureLanguageAndApiVersion(
     project: Project,
     module: Module,
     languageVersion: String,
@@ -321,9 +347,7 @@ fun configureLanguageAndApiVersion(
         val modelsProvider = IdeModifiableModelsProviderImpl(project)
         val facet = module.getOrCreateFacet(modelsProvider, useProjectSettings = false)
         facet.configureFacet(languageVersion, LanguageFeature.State.DISABLED, null, modelsProvider)
-        if (apiVersion != null) {
-            facet.configuration.settings.apiLevel = LanguageVersion.fromVersionString(apiVersion)
-        }
+        facet.configuration.settings.apiLevel = LanguageVersion.fromVersionString(apiVersion)
         KotlinCommonCompilerArgumentsHolder.getInstance(project).update { this.languageVersion = languageVersion }
         modelsProvider.commit()
     }
