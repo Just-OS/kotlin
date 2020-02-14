@@ -5,7 +5,7 @@
         {
           "specVersion": "0.1-268",
           "casesNumber": 1,
-          "description": "Implicitly imported extension callable only",
+          "description": "Star-imported extension callable only",
           "unexpectedBehaviour": false
         }
       ],
@@ -13,8 +13,8 @@
         {
           "specVersion": "0.1-268",
           "casesNumber": 1,
-          "description": "Implicitly imported extension callable only",
-          "path": "compiler/tests-spec/testData/diagnostics/linked/overload-resolution/building-the-overload-candidate-set-ocs/infix-function-call/p-2/neg/3.1.kt",
+          "description": "Star-imported extension callable only",
+          "path": "compiler/tests-spec/testData/diagnostics/linked/overload-resolution/building-the-overload-candidate-set-ocs/infix-function-call/p-2/neg/3.5.kt",
           "unexpectedBehaviour": false
         },
         {
@@ -35,20 +35,46 @@
       ]
     },
     "pos": {
-      "3": [
-        {
-          "specVersion": "0.1-268",
-          "casesNumber": 1,
-          "description": "",
-          "unexpectedBehaviour": false
-        }
-      ],
       "1": [
         {
           "specVersion": "0.1-268",
+          "casesNumber": 2,
+          "description": "Star-imported infix extension callables",
+          "unexpectedBehaviour": false
+        },
+        {
+          "specVersion": "0.1-268",
+          "casesNumber": 2,
+          "description": "Star-imported infix extension callables",
+          "path": "compiler/tests-spec/testData/diagnostics/linked/overload-resolution/building-the-overload-candidate-set-ocs/infix-function-call/p-2/neg/1.4.kt",
+          "unexpectedBehaviour": false
+        },
+        {
+          "specVersion": "0.1-268",
+          "casesNumber": 2,
+          "description": "Star-imported infix extension callables",
+          "path": "compiler/tests-spec/testData/diagnostics/linked/overload-resolution/building-the-overload-candidate-set-ocs/infix-function-call/p-2/pos/3.4.kt",
+          "unexpectedBehaviour": false
+        },
+        {
+          "specVersion": "0.1-268",
           "casesNumber": 1,
-          "description": "",
-          "path": "compiler/tests-spec/testData/diagnostics/linked/overload-resolution/building-the-overload-candidate-set-ocs/infix-function-call/p-2/pos/3.1.kt",
+          "description": "Star-imported infix extension callables",
+          "path": "compiler/tests-spec/testData/diagnostics/linked/overload-resolution/building-the-overload-candidate-set-ocs/infix-function-call/p-2/pos/3.5.kt",
+          "unexpectedBehaviour": false
+        }
+      ],
+      "3": [
+        {
+          "specVersion": "0.1-268",
+          "casesNumber": 2,
+          "description": "Star-imported infix extension callables",
+          "unexpectedBehaviour": false
+        },
+        {
+          "specVersion": "0.1-268",
+          "casesNumber": 1,
+          "description": "Star-imported infix extension callables",
           "unexpectedBehaviour": false
         }
       ]

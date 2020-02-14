@@ -23,7 +23,7 @@ operator fun CharSequence.contains(regex: Regex): Boolean {
 
 // FILE: TestCase2.kt
 package sentence3
-import libPackage.* //nothing to import, extension is private
+import libPackage.* //nothing to import, extension is not infix
 
 // TESTCASE NUMBER: 1
 fun case1() {
