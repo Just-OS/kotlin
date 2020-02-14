@@ -7,17 +7,18 @@
  *
  * SPEC VERSION: 0.1-268
  * PLACE: overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 1
- * RELEVANT PLACES: overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 1
+ * RELEVANT PLACES: overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 2
+ * overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 1
  * overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 2
- * overload-resolution, building-the-overload-candidate-set-ocs, call-with-an-explicit-receiver -> paragraph 6 -> sentence 4
- * NUMBER: 4
- * DESCRIPTION: Star-imported infix extension callables
+ * overload-resolution, building-the-overload-candidate-set-ocs, call-with-an-explicit-receiver -> paragraph 6 -> sentence 3
+ * NUMBER: 3
+ * DESCRIPTION: Explicitly imported infix extension callables
  */
 
 // FILE: Extensions.kt
 package libPackage
 
- operator fun CharSequence.contains(regex: Regex): Boolean {
+operator fun CharSequence.contains(regex: Regex): Boolean {
     println("my contains")
     return true
 }
@@ -25,7 +26,7 @@ package libPackage
 
 package sentence3
 
- operator fun CharSequence.contains(regex: Regex): Boolean {
+operator fun CharSequence.contains(regex: Regex): Boolean {
     println("my package scope contains")
     return true
 }
@@ -34,7 +35,7 @@ package sentence3
 // TESTCASE NUMBER: 1
 
 package sentence3
-import libPackage.*
+import libPackage.contains
 
 
 fun case1() {
@@ -44,15 +45,18 @@ fun case1() {
 
 // FILE: TestCase2.kt
 // TESTCASE NUMBER: 2
-package testPack
-import libPackage.*
 
- operator fun CharSequence.contains(regex: Regex): Boolean {
-    println("my package scope top level contains")
-    return true
-}
+package sentence3
+import libPackage.contains
+
 
 fun case2() {
+    operator fun CharSequence.contains(regex: Regex): Boolean {
+        println("my local contains")
+        return true
+    }
+
     val regex = Regex("")
     "" <!INFIX_MODIFIER_REQUIRED!>contains<!>  regex
 }
+

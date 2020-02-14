@@ -8,6 +8,7 @@
  * SPEC VERSION: 0.1-268
  * PLACE: overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 1
  * RELEVANT PLACES: overload-resolution, building-the-overload-candidate-set-ocs, infix-function-call -> paragraph 2 -> sentence 2
+ * overload-resolution, building-the-overload-candidate-set-ocs, call-with-an-explicit-receiver -> paragraph 6 -> sentence 1
  * NUMBER: 1
  * DESCRIPTION: Implicitly imported extension callable without infix modifier
  */
@@ -15,18 +16,81 @@
 // FILE: Extensions.kt
 package libPackage
 
-/*public, without infix */
-operator fun CharSequence.contains(regex: Regex): Boolean {
-    println("my contains")
-    return true
+class A() {
+     fun foo(x: Int) = "member fun foo"
 }
 
-// FILE: TestCase2.kt
-package sentence3
-import libPackage.* //nothing to import, extension is not infix
+// FILE: Extensions.kt
+// TESTCASE NUMBER: 0
 
+package sentence3
+import libPackage.A
+
+fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "pack scope extension fun foo"
+
+// FILE: TestCase1.kt
 // TESTCASE NUMBER: 1
-fun case1() {
-    val regex = Regex("")
-    "" <!INFIX_MODIFIER_REQUIRED!>contains<!> regex
+
+package sentence3
+import libPackage.A
+
+class Case1() {
+    fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "local extension fun foo"
+
+    fun case1() {
+        val a = A()
+        a <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+        A() <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+    }
+}
+// FILE: TestCase2.kt
+// TESTCASE NUMBER: 2
+
+package sentence3
+import libPackage.A
+
+interface Case2 {
+    fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "local extension fun foo"
+
+    fun case2() {
+        val a = A()
+        a <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+        A() <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+    }
+}
+
+// FILE: TestCase3.kt
+// TESTCASE NUMBER: 3
+package testPack
+import libPackage.A
+
+fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "my package scope top level contains"
+
+
+fun case3() {
+    fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) ="my local scope contains"
+
+    val a = A()
+    a <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+    A() <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+}
+
+// FILE: TestCase4.kt
+// TESTCASE NUMBER: 4
+package testPackNew
+import libPackage.A
+
+fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "my package scope top level contains"
+
+
+fun case4() {
+
+    fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "my local contains"
+
+    fun subfun() {
+        fun A.<!EXTENSION_SHADOWED_BY_MEMBER!>foo<!>(x: Int) = "my local contains"
+        val a = A()
+        a <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+        A() <!INFIX_MODIFIER_REQUIRED!>foo<!> 1
+    }
 }
