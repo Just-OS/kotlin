@@ -2,6 +2,7 @@
 // IGNORE_BACKEND_FIR: JVM_IR
 // IGNORE_BACKEND: JS
 // WITH_RUNTIME
+// SKIP_DCE_DRIVEN
 
 fun interface KRunnable {
     fun invoke()
