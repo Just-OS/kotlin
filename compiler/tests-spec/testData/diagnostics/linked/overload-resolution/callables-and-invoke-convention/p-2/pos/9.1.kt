@@ -42,7 +42,7 @@ import libPackage.zoo as foo
 
 class Case2() {
     enum class A {
-        foo, boo;
+        foo, boo, zoo;
 
         fun f() {
             <!DEBUG_INFO_AS_CALL("fqName: testPackage.Case2.A.invoke; typeCall: variable&invoke; ")!>foo()<!>
